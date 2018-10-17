@@ -45,6 +45,7 @@ subroutine SumNoError(Set, nrow, ncol, Summ, err_float)
     logical :: data_exist
 
     Summ = 0d0
+    !$OMP PARALLEL DO
     do j = 1, ncol
         data_exist = .false.
         do i = 1, nrow
@@ -55,6 +56,7 @@ subroutine SumNoError(Set, nrow, ncol, Summ, err_float)
         end do
         if (.not. data_exist) Summ(j) = err_float
     end do
+    !$OMP END PARALLEL DO
 end subroutine SumNoError
 
 !***************************************************************************
@@ -274,6 +276,7 @@ subroutine CovarianceMatrixNoError(Set, nrow, ncol, Cov, err_float)
     real(kind = dbl) :: sumi
     real(kind = dbl) :: sumj
 
+    !$OMP PARALLEL DO
     do i = 1, ncol
         do j = 1, ncol
             sumi = 0d0
@@ -298,6 +301,7 @@ subroutine CovarianceMatrixNoError(Set, nrow, ncol, Cov, err_float)
             end if
         end do
     end do
+   !$OMP END PARALLEL DO
 end subroutine CovarianceMatrixNoError
 
 !***************************************************************************

@@ -104,6 +104,7 @@ subroutine TestSpikeDetectionVickers97(Set, N, printout)
 
     IsSpike = .false.
     !> main cycle, looping over the moving window
+
 100 continue
     passes = passes + 1
     do wdw = 1, wdw_num
@@ -149,7 +150,7 @@ subroutine TestSpikeDetectionVickers97(Set, N, printout)
             end do
         end if
     end do
-
+!$OMP PARALLEL DO
     !> spikes detection and removal (if requested) in the whole file
     do j = u, pe
         if (E2Col(j)%present) then
@@ -253,7 +254,7 @@ subroutine TestSpikeDetectionVickers97(Set, N, printout)
             end if
         end if
     end do
-
+ !$OMP END PARALLEL DO
     !> accumulates the number of spikes
     tot_spikes = tot_spikes + nspikes
     tot_spikes_sng = tot_spikes_sng + nspikes_sng
